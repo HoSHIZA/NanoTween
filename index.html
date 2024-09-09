@@ -63,7 +63,7 @@
         event.preventDefault();
 
         const namespace = document.getElementById('namespace').value;
-        const zip = new JSZip();
+        const proxyUrl = 'https://cors.bridged.cc/'; // CORS-proxy
         const repoUrl = 'https://github.com/HoSHIZA/NanoTween-Embedded/archive/refs/heads/master.zip';
 
         if (!namespace) {
@@ -75,7 +75,8 @@
         messageElement.innerHTML = `<p>Loading repository...</p>`;
 
         try {
-            const response = await fetch(repoUrl);
+            const response = await fetch(proxyUrl + repoUrl);
+
             if (!response.ok) {
                 throw new Error('Failed to download the repository.');
             }
@@ -83,18 +84,22 @@
             const blob = await response.blob();
             const zipContent = await JSZip.loadAsync(blob);
 
-            zipContent.folder('repo-master/NanoTween').forEach(async function (relativePath, file) {
+            messageElement.innerHTML = `<p>Replacing namespace...</p>`;
+
+            zipContent.folder('NanoTween-Embedded-master/NanoTween').forEach(async function (relativePath, file) {
                 if (relativePath.endsWith('.cs')) {
                     const fileData = await file.async("string");
                     const updatedData = fileData.replace(/NanoTweenRootNamespace/g, namespace);
-                    zip.file(file.name, updatedData);
+                    zipContent.file(file.name, updatedData);
                 }
             });
 
-            zip.generateAsync({ type: 'blob' }).then(function (content) {
+            messageElement.innerHTML = `<p>Creating ZIP archive...</p>`;
+            zipContent.generateAsync({ type: 'blob' }).then(function (content) {
                 saveAs(content, `NanoTween-${namespace}.zip`);
                 messageElement.innerHTML = `<p style="color: green;">Configuration complete! Your download will start shortly.</p>`;
             });
+
         } catch (error) {
             messageElement.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
         }
