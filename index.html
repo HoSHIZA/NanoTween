@@ -83,7 +83,7 @@
             const blob = await response.blob();
             const zipContent = await JSZip.loadAsync(blob);
 
-            zipContent.folder('repo-main/NanoTween').forEach(async function (relativePath, file) {
+            zipContent.folder('repo-master/NanoTween').forEach(async function (relativePath, file) {
                 if (relativePath.endsWith('.cs')) {
                     const fileData = await file.async("string");
                     const updatedData = fileData.replace(/NanoTweenRootNamespace/g, namespace);
