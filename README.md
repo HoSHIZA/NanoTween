@@ -18,3 +18,7 @@ Click on the button below to go to the page to configure a custom NanoTween.
 
 1. Using the button above, configure and download the archive with the prepared NanoTween.
 2. Copy the `NanoTween` folder to your asset directory.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
