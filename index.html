@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NanoTween Generator</title>
+    <title>NanoTween Configurator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,13 +45,13 @@
     </style>
 </head>
 <body>
-<h1>NanoTween Generator</h1>
+<h1>NanoTween Configurator</h1>
 <p>Enter the required settings.</p>
 
 <form id="namespace-form">
     <label for="namespace">Namespace:</label>
     <input type="text" id="namespace" name="namespace" placeholder="Enter new namespace" required>
-    <button type="submit">Generate and Download ZIP</button>
+    <button type="submit">Configure and Download ZIP</button>
 </form>
 
 <div class="message" id="message"></div>
@@ -64,7 +64,7 @@
 
         const namespace = document.getElementById('namespace').value;
         const repoOwner = 'HoSHIZA';
-        const repoName = 'NanoTween-Embedded';
+        const repoName = 'NanoTween';
         const branch = 'master';
 
         const messageElement = document.getElementById('message');
