@@ -1,4 +1,4 @@
-# NanoTween - asset embedded tweening system.
+# NanoTween - embedded tweening system.
 
 A tweening system designed to be embedded in third-party assets. There can be any number of copies, as long as the namespaces and assemblies in which they are embedded are different.
 
