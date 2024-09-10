@@ -16,8 +16,13 @@ Click on the button below to go to the page to configure a custom NanoTween.
 
 ## Installation
 
-1. Using the button above, configure and download the archive with the prepared NanoTween.
-2. Copy the `NanoTween` folder to your asset directory.
+1. Use the button above to open the configuration page.
+2. Using the form, enter the data you need and download the archive. ![Preview](.github/images/configurator-form.png)
+3. Copy the `NanoTween` folder to your asset directory.
+
+## Usage
+
+TODO
 
 ## License
 
