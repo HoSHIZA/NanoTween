@@ -1,14 +1,28 @@
 namespace NanoTweenRootNamespace.Pooling.Buffer
 {
-    internal abstract class AbstractPooledBuffer<T>
-        where T : AbstractPooledBuffer<T>, new()
+    /// <summary>
+    /// An abstract class for creating custom buffers to use the <c>Builder</c> pattern.
+    /// </summary>
+    /// <example>
+    /// public class SomeBuilderBuffer : AbstractPooledBuffer<![CDATA[<SomeBuilderBuffer>]]> {}
+    /// </example>
+    /// <remarks>
+    /// Static object pooling is used, so, each buffer of type <c>T</c> must be unique.
+    /// </remarks>
+    public abstract class AbstractPooledBuffer<T> where T : AbstractPooledBuffer<T>, new()
     {
         protected static T PoolRoot = new();
         
         protected T Next;
         
+        /// <summary>
+        /// Buffer version. 
+        /// </summary>
         public ushort Revision;
         
+        /// <summary>
+        /// Takes a buffer from the pool of available buffers.
+        /// </summary>
         public static T GetPooled()
         {
             if (PoolRoot == null) return new T();
@@ -22,6 +36,9 @@ namespace NanoTweenRootNamespace.Pooling.Buffer
             return result;
         }
         
+        /// <summary>
+        /// Returns the buffer to the pool and increments <see cref="Revision"/>.
+        /// </summary>
         public static void Release(T buffer)
         {
             buffer.Revision++;
@@ -34,6 +51,9 @@ namespace NanoTweenRootNamespace.Pooling.Buffer
             }
         }
         
+        /// <summary>
+        /// Reset all buffer values.
+        /// </summary>
         protected abstract void Reset();
     }
 }

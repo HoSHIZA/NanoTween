@@ -56,14 +56,7 @@ namespace NanoTweenRootNamespace
     
     internal struct NanoTweenBuilder<T> : IDisposable
     {
-        public struct BindingContext<TTarget>
-            where TTarget : class
-        {
-            public T Value;
-            public TTarget Target;
-        }
-        
-        internal ushort Revision;
+        internal readonly ushort Revision;
         internal NanoTweenBuilderBuffer<T> Buffer;
         
         internal NanoTweenBuilder(NanoTweenBuilderBuffer<T> buffer)
@@ -151,14 +144,14 @@ namespace NanoTweenRootNamespace
         }
         
         /// <summary>
-        /// Sets <c>Ease</c> with Enum, using EaseWrapper.
+        /// Sets <c>Ease</c> with <see cref="EaseData"/>.
         /// </summary>
         [MethodImpl(256)]
-        public readonly NanoTweenBuilder<T> WithEase(EaseWrapper wrapper)
+        public readonly NanoTweenBuilder<T> WithEase(EaseData ease)
         {
             ValidateBuffer();
             
-            Buffer.Data.Core.Ease = wrapper;
+            Buffer.Data.Core.Ease = ease;
             
             return this;
         }

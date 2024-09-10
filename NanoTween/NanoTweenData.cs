@@ -65,7 +65,7 @@ namespace NanoTweenRootNamespace
     {
         public TweenState State;
 
-        public EaseWrapper Ease;
+        public EaseData Ease;
         
         public double Time;
         public float Duration;
@@ -83,7 +83,7 @@ namespace NanoTweenRootNamespace
         
         public static readonly NanoTweenDataCore Default = new()
         {
-            Ease = EaseWrapper.Default,
+            Ease = EaseData.Default,
             PlaybackSpeed = 1,
             AffectLoopsOnDuration = false,
             LoopCount = 1,

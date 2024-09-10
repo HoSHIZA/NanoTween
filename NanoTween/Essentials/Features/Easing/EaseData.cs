@@ -1,11 +1,13 @@
 using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace NanoTweenRootNamespace.Easing
 {
+    /// <summary>
+    /// A structure representing <c>Ease</c>.
+    /// </summary>
     [Serializable]
-    internal struct EaseWrapper
+    internal struct EaseData
     {
         [SerializeField] private EaseType _easeType;
         [SerializeField] private EasePower _easePower;
@@ -13,31 +15,33 @@ namespace NanoTweenRootNamespace.Easing
         
         private readonly Func<float, float> _function;
         
-        public EaseWrapper(Ease ease, AnimationCurve curve = null) : this()
+        public EaseData(Ease ease, AnimationCurve curve = null) : this()
         {
             _easeType = EaseUtility.GetEaseType(ease);
             _easePower = EaseUtility.GetEasePower(ease);
             _curve = curve;
-
+            
             if (_easeType == EaseType.Custom && _curve == null)
             {
                 _function = EaseUtility.GetFunction(ease);
             }
         }
         
-        public EaseWrapper(Func<float, float> func) : this()
+        public EaseData(Func<float, float> func) : this()
         {
             _easeType = EaseType.Custom;
             _function = func;
         }
         
-        public EaseWrapper(AnimationCurve curve) : this()
+        public EaseData(AnimationCurve curve) : this()
         {
             _easeType = EaseType.Custom;
             _curve = curve;
         }
         
-        [MethodImpl(256)]
+        /// <summary>
+        /// Evaluates <c>t</c> with the selected <c>ease</c>.
+        /// </summary>
         public float Evaluate(float t)
         {
             if (_easeType == EaseType.Custom)
@@ -53,21 +57,21 @@ namespace NanoTweenRootNamespace.Easing
             return EaseUtility.Evaluate(t, _easeType, _easePower);
         }
         
-        public static implicit operator EaseWrapper(Ease ease)
+        public static implicit operator EaseData(Ease ease)
         {
-            return new EaseWrapper(ease);
+            return new EaseData(ease);
         }
         
-        public static implicit operator EaseWrapper(Func<float, float> func)
+        public static implicit operator EaseData(Func<float, float> func)
         {
-            return new EaseWrapper(func);
+            return new EaseData(func);
         }
         
-        public static implicit operator EaseWrapper(AnimationCurve curve)
+        public static implicit operator EaseData(AnimationCurve curve)
         {
-            return new EaseWrapper(curve);
+            return new EaseData(curve);
         }
 
-        public static EaseWrapper Default = new(Ease.Linear);
+        public static EaseData Default = new(Ease.Linear);
     }
 }
