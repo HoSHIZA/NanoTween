@@ -133,7 +133,8 @@
         {
             await processConfiguration(config);
             showMessage('Configuration complete! Your download will start shortly.', 'success');
-        } catch (error) 
+        } 
+        catch (error) 
         {
             showMessage(`Error: ${error.message}`, 'error');
         }
@@ -148,15 +149,16 @@
         const branch = 'master';
 
         const repoData = await fetchRepoData(repoOwner, repoName, branch);
-        const csFiles = repoData.tree.filter(file => file.path.endsWith('.cs'));
+        const csFiles = repoData.tree.filter(file => file.path.startsWith('src/') && file.path.endsWith('.cs'));
 
         const zip = new JSZip();
+        const nanoTweenFolder = zip.folder('NanoTween');
 
-        for (const file of csFiles) 
-        {
+        for (const file of csFiles) {
             const fileContent = await fetchFileContent(repoOwner, repoName, file.path);
             const updatedContent = updateFileContent(fileContent, config);
-            zip.file(file.path, updatedContent);
+            const newPath = file.path.replace('src/', '');
+            nanoTweenFolder.file(newPath, updatedContent);
         }
 
         const content = await zip.generateAsync({ type: 'blob' });
