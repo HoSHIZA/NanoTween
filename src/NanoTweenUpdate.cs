@@ -65,8 +65,7 @@ namespace NanoTweenRootNamespace
                 {
                     InitializeTween(wrapper);
                 }
-
-                Debug.Log(wrapper.Data.Core.Time);
+                
                 UpdateTween(wrapper);
                 
                 yield return null;
