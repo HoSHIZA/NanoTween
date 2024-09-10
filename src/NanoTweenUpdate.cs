@@ -23,6 +23,7 @@
 //   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //   SOFTWARE.
 
+using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
 using NanoTweenRootNamespace.Extensions;
@@ -137,6 +138,16 @@ namespace NanoTweenRootNamespace
         private static void RunTween<T>(DataWrapper<T> wrapper)
         {
             ref var data = ref wrapper.Data;
+            
+            if (data.FromGetter is Action<T>)
+            {
+                data.From = data.FromGetter.Invoke();
+            }
+
+            if (data.ToGetter is Action<T>)
+            {
+                data.To = data.ToGetter.Invoke();
+            }
             
             data.Core.State = TweenState.Running;
             data.Callback.OnStartDelayedAction?.Invoke();

@@ -575,15 +575,16 @@ namespace NanoTweenRootNamespace
             {
                 Buffer.Data.Callback.InvokeStart(ref Buffer.Data);
             }
-            
+
+            var context = Buffer.Context;
             var coroutine = NanoTweenUpdate.StartTween(Buffer.Context, Buffer.Data);
             
             if (!Buffer.Preserve)
             {
                 Dispose();
             }
-            
-            return new NanoTweenHandle(Buffer.Context, coroutine);
+
+            return new NanoTweenHandle(context, coroutine);
         }
         
         public void Dispose()
