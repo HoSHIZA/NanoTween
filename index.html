@@ -7,26 +7,49 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 40px;
+            margin: 0;
             padding: 20px;
-            max-width: 600px;
             background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
         }
         h1 {
             color: #333;
+            margin-top: 0;
         }
-        form {
-            margin-top: 20px;
+        .form-group {
+            margin-bottom: 20px;
         }
         label {
             font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
         }
         input[type="text"] {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        input[type="text"]:invalid {
+            border-color: #dc3545;
+        }
+        .input-error {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 5px;
+            display: none;
         }
         button {
             background-color: #28a745;
@@ -35,69 +58,137 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%;
+            font-size: 16px;
         }
         button:hover {
             background-color: #218838;
         }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
         .message {
             margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .info {
+            background-color: #e2e3e5;
+            color: #383d41;
         }
     </style>
 </head>
 <body>
-<h1>NanoTween Configurator</h1>
-<p>Enter the required settings.</p>
+<div class="container">
+    <h1>NanoTween Configurator</h1>
+    <p>Enter the required settings.</p>
 
-<form id="namespace-form">
-    <label for="namespace">Namespace:</label>
-    <input type="text" id="namespace" name="namespace" placeholder="Enter new namespace" required>
-    <button type="submit">Configure and Download ZIP</button>
-</form>
+    <form id="config-form">
+        <div class="form-group">
+            <label for="namespace">Namespace:</label>
+            <input type="text" id="namespace" name="namespace" placeholder="Enter new namespace" required pattern="^[a-zA-Z_][\w]*(?:\.[a-zA-Z_][\w]*)*$">
+            <div id="namespace-error" class="input-error">Enter a valid C# namespace.</div>
+        </div>
+        <button type="submit" id="submit-button" disabled>Configure and Download ZIP</button>
+    </form>
 
-<div class="message" id="message"></div>
+    <div class="message" id="message"></div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script>
-    document.getElementById('namespace-form').addEventListener('submit', async function(event) {
-        event.preventDefault();
+    const configForm = document.getElementById('config-form');
+    const namespaceInput = document.getElementById('namespace');
+    const namespaceError = document.getElementById('namespace-error');
+    const submitButton = document.getElementById('submit-button');
+    const messageElement = document.getElementById('message');
 
-        const namespace = document.getElementById('namespace').value;
+    configForm.addEventListener('submit', handleSubmit);
+    namespaceInput.addEventListener('input', validateNamespace);
+
+    function validateNamespace() 
+    {
+        const isValid = namespaceInput.checkValidity();
+        namespaceError.style.display = isValid ? 'none' : 'block';
+        submitButton.disabled = !isValid;
+    }
+
+    async function handleSubmit(event) 
+    {
+        event.preventDefault();
+        const formData = new FormData(configForm);
+        const config = Object.fromEntries(formData.entries());
+
+        try 
+        {
+            await processConfiguration(config);
+            showMessage('Configuration complete! Your download will start shortly.', 'success');
+        } catch (error) 
+        {
+            showMessage(`Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function processConfiguration(config) 
+    {
+        showMessage('Fetching repository files...', 'info');
+
         const repoOwner = 'HoSHIZA';
         const repoName = 'NanoTween';
         const branch = 'master';
 
-        const messageElement = document.getElementById('message');
+        const repoData = await fetchRepoData(repoOwner, repoName, branch);
+        const csFiles = repoData.tree.filter(file => file.path.endsWith('.cs'));
+
         const zip = new JSZip();
-        messageElement.innerHTML = `<p>Fetching repository files...</p>`;
 
-        try {
-            const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/git/trees/${branch}?recursive=1`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch repository files.');
-            }
-            const repoData = await response.json();
-
-            const csFiles = repoData.tree.filter(file => file.path.endsWith('.cs'));
-
-            for (const file of csFiles) {
-                const fileResponse = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${file.path}`);
-                const fileData = await fileResponse.json();
-                const fileContent = atob(fileData.content);
-
-                const updatedContent = fileContent.replace(/NanoTweenRootNamespace/g, namespace);
-
-                zip.file(file.path, updatedContent);
-            }
-
-            zip.generateAsync({ type: 'blob' }).then(function (content) {
-                saveAs(content, `NanoTween-${namespace}.zip`);
-                messageElement.innerHTML = `<p style="color: green;">Configuration complete! Your download will start shortly.</p>`;
-            });
-        } catch (error) {
-            messageElement.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        for (const file of csFiles) 
+        {
+            const fileContent = await fetchFileContent(repoOwner, repoName, file.path);
+            const updatedContent = updateFileContent(fileContent, config);
+            zip.file(file.path, updatedContent);
         }
-    });
+
+        const content = await zip.generateAsync({ type: 'blob' });
+        saveAs(content, `NanoTween-${config.namespace}.zip`);
+    }
+
+    async function fetchRepoData(owner, repo, branch) 
+    {
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch repository files.');
+        }
+        return response.json();
+    }
+
+    async function fetchFileContent(owner, repo, path) 
+    {
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
+        const fileData = await response.json();
+        return atob(fileData.content);
+    }
+
+    function updateFileContent(content, config) 
+    {
+        return content.replace(/NanoTweenRootNamespace/g, config.namespace);
+    }
+
+    function showMessage(text, type) 
+    {
+        messageElement.textContent = text;
+        messageElement.className = `message ${type}`;
+    }
 </script>
 </body>
 </html>
