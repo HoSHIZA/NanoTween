@@ -44,8 +44,11 @@ namespace NanoTweenRootNamespace
         public T From;
         public T To;
         
-        public Func<T, T, float, T> LerpFunction;
+        public Func<T> FromGetter;
+        public Func<T> ToGetter;
         
+        public Func<T, T, float, T> LerpFunction;
+
         [MethodImpl(256)]
         public T Lerp(float t)
         {
@@ -58,7 +61,7 @@ namespace NanoTweenRootNamespace
             Callback = NanoTweenCallbackData.Default,
         };
     }
-
+    
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     internal struct NanoTweenDataCore

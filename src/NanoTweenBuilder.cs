@@ -54,6 +54,7 @@ namespace NanoTweenRootNamespace
         }
     }
     
+    [PublicAPI]
     internal struct NanoTweenBuilder<T> : IDisposable
     {
         internal readonly ushort Revision;
@@ -94,8 +95,23 @@ namespace NanoTweenRootNamespace
         public readonly NanoTweenBuilder<T> From(T value)
         {
             ValidateBuffer();
-
+            
+            Buffer.Data.FromGetter = null;
             Buffer.Data.From = value;
+            
+            return this;
+        }
+        
+        /// <summary>
+        /// Sets the <c>From</c> value using <c>getter</c> at the time the tween starts after the delay.
+        /// </summary>
+        [MethodImpl(256)]
+        public readonly NanoTweenBuilder<T> From(Func<T> getter)
+        {
+            ValidateBuffer();
+
+            Buffer.Data.FromGetter = getter;
+            Buffer.Data.From = default;
             
             return this;
         }
@@ -108,7 +124,22 @@ namespace NanoTweenRootNamespace
         {
             ValidateBuffer();
 
+            Buffer.Data.ToGetter = null;
             Buffer.Data.To = value;
+            
+            return this;
+        }
+        
+        /// <summary>
+        /// Sets the <c>To</c> value using <c>getter</c> at the time the tween starts after the delay.
+        /// </summary>
+        [MethodImpl(256)]
+        public readonly NanoTweenBuilder<T> To(Func<T> getter)
+        {
+            ValidateBuffer();
+            
+            Buffer.Data.ToGetter = getter;
+            Buffer.Data.To = default;
             
             return this;
         }
@@ -216,9 +247,22 @@ namespace NanoTweenRootNamespace
             
             return this;
         }
-        
+
         /// <summary>
-        /// Sets the playback speed. Can be changed dynamically via <c>NiTweenHandle</c>.
+        /// Sets the TimeKind.
+        /// </summary>
+        [MethodImpl(256)]
+        public readonly NanoTweenBuilder<T> WithTimeKind(TimeKind timeKind)
+        {
+            ValidateBuffer();
+            
+            Buffer.Data.Core.TimeKind = timeKind;
+            
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the playback speed.
         /// </summary>
         [MethodImpl(256)]
         public readonly NanoTweenBuilder<T> WithPlaybackSpeed(float speed)
@@ -229,7 +273,7 @@ namespace NanoTweenRootNamespace
             
             return this;
         }
-        
+
         /// <summary>
         /// Specifies whether to set the <c>From</c> value after binding.
         /// </summary>
@@ -376,9 +420,9 @@ namespace NanoTweenRootNamespace
         #region Bind
         
         /// <summary>
-        /// Run tween without binding.
+        /// Run tween with target binding.
         /// </summary>
-        public Coroutine Run<TTarget>(TTarget target, Action<T, TTarget> action)
+        public NanoTweenHandle Run<TTarget>(TTarget target, Action<T, TTarget> action)
             where TTarget : class
         {
             ValidateBuffer();
@@ -396,7 +440,7 @@ namespace NanoTweenRootNamespace
         /// <summary>
         /// Run tween without binding.
         /// </summary>
-        public Coroutine RunWithoutBinding()
+        public NanoTweenHandle RunWithoutBinding()
         {
             ValidateBuffer();
             
@@ -411,7 +455,7 @@ namespace NanoTweenRootNamespace
         /// <summary>
         /// Run tween with data binding.
         /// </summary>
-        public Coroutine Bind(Action<T> action)
+        public NanoTweenHandle Bind(Action<T> action)
         {
             ValidateBuffer();
             
@@ -428,7 +472,7 @@ namespace NanoTweenRootNamespace
         /// <summary>
         /// Run tween with data binding. Does not allocate garbage when binding.
         /// </summary>
-        public Coroutine BindWithState<TState>(TState state, Action<T, TState> action) 
+        public NanoTweenHandle BindWithState<TState>(TState state, Action<T, TState> action) 
             where TState : class
         {
             ValidateBuffer();
@@ -446,7 +490,7 @@ namespace NanoTweenRootNamespace
         /// <summary>
         /// Run tween with data binding. Does not allocate garbage when binding.
         /// </summary>
-        public Coroutine BindWithState<TState1, TState2>(TState1 state1, TState2 state2, Action<T, TState1, TState2> action) 
+        public NanoTweenHandle BindWithState<TState1, TState2>(TState1 state1, TState2 state2, Action<T, TState1, TState2> action) 
             where TState1 : class
             where TState2 : class
         {
@@ -465,7 +509,7 @@ namespace NanoTweenRootNamespace
         /// <summary>
         /// Run tween with data binding. Does not allocate garbage when binding.
         /// </summary>
-        public Coroutine BindWithState<TState1, TState2, TState3>(TState1 state1, TState2 state2, TState3 state3, 
+        public NanoTweenHandle BindWithState<TState1, TState2, TState3>(TState1 state1, TState2 state2, TState3 state3, 
             Action<T, TState1, TState2, TState3> action) 
             where TState1 : class
             where TState2 : class
@@ -525,13 +569,13 @@ namespace NanoTweenRootNamespace
         
         #endregion
         
-        private Coroutine Schedule()
+        private NanoTweenHandle Schedule()
         {
             if (Buffer.BindOnSchedule && Buffer.Data.Callback.ValueUpdateAction != null)
             {
                 Buffer.Data.Callback.InvokeStart(ref Buffer.Data);
             }
-
+            
             var coroutine = NanoTweenUpdate.StartTween(Buffer.Context, Buffer.Data);
             
             if (!Buffer.Preserve)
@@ -539,7 +583,7 @@ namespace NanoTweenRootNamespace
                 Dispose();
             }
             
-            return coroutine;
+            return new NanoTweenHandle(Buffer.Context, coroutine);
         }
         
         public void Dispose()
