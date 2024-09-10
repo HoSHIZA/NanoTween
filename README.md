@@ -12,7 +12,7 @@ A tweening system designed to be embedded in third-party assets. There can be an
 
 Click on the button below to go to the page to configure a custom NanoTween.
 
-[![Open Page](https://img.shields.io/badge/Open%20Configuration%20Page-Namespace%20Replacer?logo=github)](https://hoshiza.github.io/NanoTween/)
+[![Open Page](https://img.shields.io/badge/Open%20Configuration%20Page-Namespace%20Replacer?logo=github)](https://hoshiza.github.io/NanoTween/configurator/)
 
 ## Installation
 
