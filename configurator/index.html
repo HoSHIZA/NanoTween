@@ -176,17 +176,16 @@
         return response.json();
     }
 
-    async function fetchFileContent(owner, repo, path) 
+    async function fetchFileContent(owner, repo, path)
     {
         const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
         const fileData = await response.json();
-        return atob(fileData.content);
+        return decodeURIComponent(atob(fileData.content));
     }
 
     function updateFileContent(content, config) 
     {
-        return content;
-        // return content.replace(/NanoTweenRootNamespace/g, config.namespace);
+        return content.replace(/NanoTweenRootNamespace/g, config.namespace);
     }
 
     function showMessage(text, type) 
