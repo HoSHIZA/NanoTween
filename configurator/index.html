@@ -152,13 +152,14 @@
         const csFiles = repoData.tree.filter(file => file.path.startsWith('src/') && file.path.endsWith('.cs'));
 
         const zip = new JSZip();
-        const nanoTweenFolder = zip.folder('NanoTween');
-
-        for (const file of csFiles) {
+        const rootFolder = zip.folder('NanoTween');
+        
+        for (const file of csFiles)
+        {
             const fileContent = await fetchFileContent(repoOwner, repoName, file.path);
-            const updatedContent = updateFileContent(fileContent, config);
+            const newContent = updateFileContent(fileContent, config);
             const newPath = file.path.replace('src/', '');
-            nanoTweenFolder.file(newPath, updatedContent);
+            rootFolder.file(newPath, newContent);
         }
 
         const content = await zip.generateAsync({ type: 'blob' });
@@ -168,7 +169,8 @@
     async function fetchRepoData(owner, repo, branch) 
     {
         const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`);
-        if (!response.ok) {
+        if (!response.ok) 
+        {
             throw new Error('Failed to fetch repository files.');
         }
         return response.json();
@@ -183,7 +185,8 @@
 
     function updateFileContent(content, config) 
     {
-        return content.replace(/NanoTweenRootNamespace/g, config.namespace);
+        return content;
+        // return content.replace(/NanoTweenRootNamespace/g, config.namespace);
     }
 
     function showMessage(text, type) 
