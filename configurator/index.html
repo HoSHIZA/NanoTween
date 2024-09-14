@@ -185,12 +185,12 @@
         {
             const fileContent = await fetchFileContent(repoOwner, repoName, file.path);
             const newContent = updateFileContent(fileContent, config);
-            const newPath = file.path.replace('src/', '');
+            const newPath = file.path.replace(/\/NanoTween/g, `\/${config.className}`).replace('src/', '');
             root.file(newPath, newContent);
         }
         
         const content = await zip.generateAsync({ type: 'blob' });
-        saveAs(content, `NanoTween-${config.namespace}.zip`);
+        saveAs(content, `NanoTween-${config.className}.zip`);
     }
     
     async function fetchRepoData(owner, repo, branch) 
@@ -221,7 +221,7 @@
     {
         return content
             .replace(/NanoTweenRootNamespace/g, config.namespace)
-            .replace(/(?<!\/)NanoTween/gi, config.className);
+            .replace(/(?<!\/)NanoTween/g, config.className);
     }
     
     function showMessage(text, type) 
