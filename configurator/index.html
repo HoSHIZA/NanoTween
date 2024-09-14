@@ -94,9 +94,14 @@
 
     <form id="config-form">
         <div class="form-group">
+            <label for="folderName">Folder Name:</label>
+            <input type="text" id="folderName" name="folderName" placeholder="Enter folder name" required pattern="^[a-zA-Z0-9_-]+$">
+            <div id="folderName-error" class="input-error">Please enter a valid folder name (letters, numbers, underscores, and hyphens only).</div>
+        </div>
+        <div class="form-group">
             <label for="namespace">Namespace:</label>
             <input type="text" id="namespace" name="namespace" placeholder="Enter new namespace" required pattern="^[a-zA-Z_][\w]*(?:\.[a-zA-Z_][\w]*)*$">
-            <div id="namespace-error" class="input-error">Enter a valid C# namespace.</div>
+            <div id="namespace-error" class="input-error">Please enter a valid C# namespace.</div>
         </div>
         <button type="submit" id="submit-button" disabled>Configure and Download ZIP</button>
     </form>
@@ -108,24 +113,35 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script>
     const configForm = document.getElementById('config-form');
+    
+    const folderNameInput = document.getElementById('folderName');
+    const folderNameError = document.getElementById('folderName-error');
+    
     const namespaceInput = document.getElementById('namespace');
     const namespaceError = document.getElementById('namespace-error');
+    
     const submitButton = document.getElementById('submit-button');
     const messageElement = document.getElementById('message');
 
     configForm.addEventListener('submit', handleSubmit);
-    namespaceInput.addEventListener('input', validateNamespace);
+    folderNameInput.addEventListener('input', validateForm);
+    namespaceInput.addEventListener('input', validateForm);
 
-    function validateNamespace() 
+    function validateForm() 
     {
-        const isValid = namespaceInput.checkValidity();
-        namespaceError.style.display = isValid ? 'none' : 'block';
-        submitButton.disabled = !isValid;
+        const isFolderNameValid = folderNameInput.checkValidity();
+        const isNamespaceValid = namespaceInput.checkValidity();
+
+        folderNameError.style.display = isFolderNameValid ? 'none' : 'block';
+        namespaceError.style.display = isNamespaceValid ? 'none' : 'block';
+
+        submitButton.disabled = !(isNamespaceValid && isFolderNameValid);
     }
 
     async function handleSubmit(event) 
     {
         event.preventDefault();
+        
         const formData = new FormData(configForm);
         const config = Object.fromEntries(formData.entries());
 
@@ -152,7 +168,7 @@
         const csFiles = repoData.tree.filter(file => file.path.startsWith('src/') && file.path.endsWith('.cs'));
 
         const zip = new JSZip();
-        const rootFolder = zip.folder('NanoTween');
+        const rootFolder = zip.folder(config.folderName);
         
         for (const file of csFiles)
         {
