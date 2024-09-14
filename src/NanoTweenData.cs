@@ -36,7 +36,7 @@ namespace NanoTweenRootNamespace
     [StructLayout(LayoutKind.Sequential)]
     internal struct NanoTweenData<T>
     {
-        public TweenState State;
+        public NTweenState State;
         
         public NanoTweenDataCore Core;
         public NanoTweenCallbackData Callback;
@@ -66,7 +66,7 @@ namespace NanoTweenRootNamespace
     [StructLayout(LayoutKind.Sequential)]
     internal struct NanoTweenDataCore
     {
-        public TweenState State;
+        public NTweenState State;
 
         public EaseData Ease;
         
@@ -76,11 +76,11 @@ namespace NanoTweenRootNamespace
         
         public TimeKind TimeKind;
         
-        public DelayType DelayType;
-        public DelayMode DelayMode;
+        public NDelayType DelayType;
+        public NDelayMode DelayMode;
         public float Delay;
         
-        public LoopType LoopType;
+        public NLoopType LoopType;
         public bool AffectLoopsOnDuration;
         public int LoopCount;
         
@@ -138,7 +138,7 @@ namespace NanoTweenRootNamespace
     }
 
     [PublicAPI]
-    public enum TweenState : byte
+    public enum NTweenState : byte
     {
         Idle,
         Scheduled,
@@ -149,21 +149,21 @@ namespace NanoTweenRootNamespace
     }
     
     [PublicAPI]
-    public enum LoopType : byte
+    public enum NLoopType : byte
     {
         Restart,
         Yoyo,
     }
     
     [PublicAPI]
-    public enum DelayType : byte
+    public enum NDelayType : byte
     {
         FirstLoop,
         EveryLoop,
     }
     
     [PublicAPI]
-    public enum DelayMode : byte
+    public enum NDelayMode : byte
     {
         AffectOnDuration,
         SkipValuesDuringDelayed,

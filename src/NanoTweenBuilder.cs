@@ -36,7 +36,7 @@ namespace NanoTweenRootNamespace
     internal sealed class NanoTweenBuilderBuffer<T> : AbstractPooledBuffer<NanoTweenBuilderBuffer<T>>
     {
         public NanoTweenData<T> Data;
-        public MonoBehaviour Context;
+        public MonoBehaviour Owner;
         
         public bool BindOnSchedule;
         public bool ScheduleOnBind;
@@ -69,11 +69,11 @@ namespace NanoTweenRootNamespace
         #region Creation
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<T> Create(MonoBehaviour context, T from, T to, float duration, Func<T, T, float, T> lerp)
+        public static NanoTweenBuilder<T> Create(MonoBehaviour owner, T from, T to, float duration, Func<T, T, float, T> lerp)
         {
             var buffer = NanoTweenBuilderBuffer<T>.GetPooled();
             
-            buffer.Context = context;
+            buffer.Owner = owner;
             
             buffer.Data.From = from;
             buffer.Data.To = to;
@@ -217,8 +217,8 @@ namespace NanoTweenRootNamespace
         /// Sets the delay duration and delay type.
         /// </summary>
         [MethodImpl(256)]
-        public readonly NanoTweenBuilder<T> WithDelay(float delay, DelayType delayType = DelayType.FirstLoop, 
-            DelayMode delayMode = DelayMode.AffectOnDuration)
+        public readonly NanoTweenBuilder<T> WithDelay(float delay, NDelayType delayType = NDelayType.FirstLoop, 
+            NDelayMode delayMode = NDelayMode.AffectOnDuration)
         {
             ValidateBuffer();
             
@@ -236,7 +236,7 @@ namespace NanoTweenRootNamespace
         /// <param name="loopType">Loop Type.</param>
         /// <param name="affectOnDuration">If <c>true</c>, the <c>duration</c> is incremented by the number of <c>loops</c>, otherwise the <c>duration</c> is the <c>total duration</c>.</param>
         [MethodImpl(256)]
-        public readonly NanoTweenBuilder<T> WithLoops(int loops, LoopType loopType = LoopType.Restart,
+        public readonly NanoTweenBuilder<T> WithLoops(int loops, NLoopType loopType = NLoopType.Restart,
             bool affectOnDuration = true)
         {
             ValidateBuffer();
@@ -429,7 +429,7 @@ namespace NanoTweenRootNamespace
             
             if (Buffer.ScheduleOnBind)
             {
-                Buffer.Data.Core.State = TweenState.Scheduled;
+                Buffer.Data.Core.State = NTweenState.Scheduled;
             }
             
             SetCallbackData(target, action);
@@ -446,7 +446,7 @@ namespace NanoTweenRootNamespace
             
             if (Buffer.ScheduleOnBind)
             {
-                Buffer.Data.Core.State = TweenState.Scheduled;
+                Buffer.Data.Core.State = NTweenState.Scheduled;
             }
             
             return Schedule();
@@ -461,7 +461,7 @@ namespace NanoTweenRootNamespace
             
             if (Buffer.ScheduleOnBind)
             {
-                Buffer.Data.Core.State = TweenState.Scheduled;
+                Buffer.Data.Core.State = NTweenState.Scheduled;
             }
             
             SetCallbackData(action);
@@ -479,7 +479,7 @@ namespace NanoTweenRootNamespace
             
             if (Buffer.ScheduleOnBind)
             {
-                Buffer.Data.Core.State = TweenState.Scheduled;
+                Buffer.Data.Core.State = NTweenState.Scheduled;
             }
             
             SetCallbackData(state, action);
@@ -498,7 +498,7 @@ namespace NanoTweenRootNamespace
             
             if (Buffer.ScheduleOnBind)
             {
-                Buffer.Data.Core.State = TweenState.Scheduled;
+                Buffer.Data.Core.State = NTweenState.Scheduled;
             }
 
             SetCallbackData(state1, state2, action);
@@ -519,7 +519,7 @@ namespace NanoTweenRootNamespace
             
             if (Buffer.ScheduleOnBind)
             {
-                Buffer.Data.Core.State = TweenState.Scheduled;
+                Buffer.Data.Core.State = NTweenState.Scheduled;
             }
             
             SetCallbackData(state1, state2, state3, action);
@@ -576,15 +576,15 @@ namespace NanoTweenRootNamespace
                 Buffer.Data.Callback.InvokeStart(ref Buffer.Data);
             }
 
-            var context = Buffer.Context;
-            var coroutine = NanoTweenUpdate.StartTween(Buffer.Context, Buffer.Data);
+            var owner = Buffer.Owner;
+            var coroutine = NanoTweenUpdate.StartTween(Buffer.Owner, Buffer.Data);
             
             if (!Buffer.Preserve)
             {
                 Dispose();
             }
 
-            return new NanoTweenHandle(context, coroutine);
+            return new NanoTweenHandle(owner, coroutine);
         }
         
         public void Dispose()

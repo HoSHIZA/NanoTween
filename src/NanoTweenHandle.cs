@@ -4,12 +4,12 @@ namespace NanoTweenRootNamespace
 {
     internal struct NanoTweenHandle
     {
-        public readonly MonoBehaviour Context;
+        public readonly MonoBehaviour Owner;
         public readonly Coroutine Routine;
         
-        public NanoTweenHandle(MonoBehaviour context, Coroutine routine)
+        public NanoTweenHandle(MonoBehaviour owner, Coroutine routine)
         {
-            Context = context;
+            Owner = owner;
             Routine = routine;
         }
     }

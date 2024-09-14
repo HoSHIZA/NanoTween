@@ -38,31 +38,31 @@ namespace NanoTweenRootNamespace
             public NanoTweenData<T> Data;
         }
         
-        public static Coroutine StartTween<T>(MonoBehaviour context, in NanoTweenData<T> data)
+        public static Coroutine StartTween<T>(MonoBehaviour owner, in NanoTweenData<T> data)
         {
             var wrapper = new DataWrapper<T>
             {
                 Data = data,
             };
             
-            return context.StartCoroutine(UpdateEnumerator(wrapper));
+            return owner.StartCoroutine(UpdateEnumerator(wrapper));
         }
         
         private static IEnumerator UpdateEnumerator<T>(DataWrapper<T> wrapper)
         {
             while (true)
             {
-                if (wrapper.Data.Core.State is TweenState.Idle)
+                if (wrapper.Data.Core.State is NTweenState.Idle)
                 {
                     yield return null;
                 }
                 
-                if (wrapper.Data.Core.State is TweenState.Completed or TweenState.Canceled)
+                if (wrapper.Data.Core.State is NTweenState.Completed or NTweenState.Canceled)
                 {
                     yield break;
                 }
                 
-                if (wrapper.Data.Core.State is TweenState.Scheduled)
+                if (wrapper.Data.Core.State is NTweenState.Scheduled)
                 {
                     InitializeTween(wrapper);
                 }
@@ -88,7 +88,7 @@ namespace NanoTweenRootNamespace
             
             data.Core.Time += delta * data.Core.PlaybackSpeed;
             
-            if (data.Core.State is TweenState.Delayed)
+            if (data.Core.State is NTweenState.Delayed)
             {
                 if (data.Core.Time >= data.Core.Delay)
                 {
@@ -123,12 +123,12 @@ namespace NanoTweenRootNamespace
             ref var data = ref wrapper.Data;
             
             data.Core.State = data.Core.Delay > 0
-                ? TweenState.Delayed
-                : TweenState.Running;
+                ? NTweenState.Delayed
+                : NTweenState.Running;
 
             data.Callback.OnStartAction?.Invoke();
 
-            if (data.Core.State is TweenState.Running)
+            if (data.Core.State is NTweenState.Running)
             {
                 RunTween(wrapper);
             }
@@ -149,10 +149,10 @@ namespace NanoTweenRootNamespace
                 data.To = data.ToGetter.Invoke();
             }
             
-            data.Core.State = TweenState.Running;
+            data.Core.State = NTweenState.Running;
             data.Callback.OnStartDelayedAction?.Invoke();
             
-            if (data.Core.DelayMode is DelayMode.AffectOnDuration)
+            if (data.Core.DelayMode is NDelayMode.AffectOnDuration)
             {
                 data.Core.Time -= data.Core.Delay;
             }
@@ -168,7 +168,7 @@ namespace NanoTweenRootNamespace
 
             var t = (float)(timeInCurrentLoop / duration);
 
-            if (data.Core.LoopType is LoopType.Yoyo && currentLoop % 2 == 1)
+            if (data.Core.LoopType is NLoopType.Yoyo && currentLoop % 2 == 1)
             {
                 t = 1 - t;
             }
@@ -185,7 +185,7 @@ namespace NanoTweenRootNamespace
 
             UpdateTweenValue(wrapper, duration);
 
-            data.Core.State = TweenState.Completed;
+            data.Core.State = NTweenState.Completed;
             data.Callback.OnCompleteAction?.Invoke();
         }
 
