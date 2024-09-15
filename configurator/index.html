@@ -85,6 +85,14 @@
             background-color: #e2e3e5;
             color: #383d41;
         }
+        .checkbox-group {
+            margin-bottom: 10px;
+        }
+        .checkbox-group label {
+            font-weight: normal;
+            display: inline;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
@@ -108,6 +116,12 @@
             <input type="text" id="folderName" name="folderName" placeholder="Enter folder name" value="NanoTween" required pattern="^[a-zA-Z0-9_-]+$">
             <div id="folderName-error" class="input-error">Please enter a valid folder name (letters, numbers, underscores, and hyphens only).</div>
         </div>
+        
+        <div class="checkbox-group">
+            <input type="checkbox" id="enableExtensionMethods" name="enableExtensionMethods" checked>
+            <label for="enableExtensionMethods">Enable extension methods for tweens.</label>
+        </div>
+
         <button type="submit" id="submit-button" disabled>Configure and Download ZIP</button>
     </form>
 
@@ -219,9 +233,16 @@
     
     function updateFileContent(content, config) 
     {
-        return content
+        let updatedContent = content
             .replace(/NanoTweenRootNamespace/g, config.namespace)
             .replace(/(?<!\/)NanoTween/g, config.className);
+        
+        if (!config.enableExtensionMethods)
+        {
+            updatedContent = updatedContent.replace(/this MonoBehaviour owner/g, 'MonoBehaviour owner');
+        }
+        
+        return updatedContent;
     }
     
     function showMessage(text, type) 
