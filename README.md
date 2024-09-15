@@ -32,7 +32,7 @@ var builder = image.CreateTween(from: Color.white, to: Color.black, duration: 2f
     .To(Color.black) // Uses the passed value when creating a tween.
     // With Prefix is used for configuration.
     .WithDelay(2f) // Creates a delay before execution.
-    .WithLoops(2, LoopType.Yoyo, affectOnDuration: true) // Creates a Loop with the passed parameters.
+    .WithLoops(2, NLoopType.Yoyo, affectOnDuration: true) // Creates a Loop with the passed parameters.
     .WithTimeKind(TimeKind.UnscaledTime) // Sets the update time.
     .WithEase(EaseFunction.InOutSine) // Sets Ease.
     .WithPlaybackSpeed(2f) // Sets the Playback Speed.
