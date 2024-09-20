@@ -84,6 +84,22 @@ namespace NanoTweenRootNamespace
             return new NanoTweenBuilder<T>(buffer);
         }
         
+        [MethodImpl(256)]
+        public static NanoTweenBuilder<T> Create(T from, T to, float duration, Func<T, T, float, T> lerp)
+        {
+            var buffer = NanoTweenBuilderBuffer<T>.GetPooled();
+            
+            buffer.Owner = NanoTweenUpdateComponent.GetOrCreate();
+            
+            buffer.Data.From = from;
+            buffer.Data.To = to;
+            buffer.Data.Core.Duration = duration;
+            
+            buffer.Data.LerpFunction = lerp;
+            
+            return new NanoTweenBuilder<T>(buffer);
+        }
+        
         #endregion
         
         #region Building - From, To
@@ -577,7 +593,7 @@ namespace NanoTweenRootNamespace
             }
 
             var owner = Buffer.Owner;
-            var coroutine = NanoTweenUpdate.StartTween(Buffer.Owner, Buffer.Data);
+            var coroutine = NanoTweenUpdate.StartTweenCoroutine(Buffer.Owner, Buffer.Data);
             
             if (!Buffer.Preserve)
             {

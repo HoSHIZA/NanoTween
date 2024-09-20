@@ -38,7 +38,7 @@ namespace NanoTweenRootNamespace
             public NanoTweenData<T> Data;
         }
         
-        public static Coroutine StartTween<T>(MonoBehaviour owner, in NanoTweenData<T> data)
+        public static Coroutine StartTweenCoroutine<T>(MonoBehaviour owner, in NanoTweenData<T> data)
         {
             var wrapper = new DataWrapper<T>
             {
