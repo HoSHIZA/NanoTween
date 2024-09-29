@@ -33,8 +33,8 @@ namespace NanoTweenRootNamespace.Helpers
     [SuppressMessage("ReSharper", "ConvertClosureToMethodGroup")]
     internal static class LerpFunction
     {
-        public static readonly Func<float, float, float, float> Float = static (from, to, t) => Mathf.LerpUnclamped(from, to, t);
-        public static readonly Func<int, int, float, int> Int = static (from, to, t) => Mathf.RoundToInt(Mathf.LerpUnclamped(from, to, t));
+        public static readonly Func<float, float, float, float> Single = static (from, to, t) => Mathf.LerpUnclamped(from, to, t);
+        public static readonly Func<int, int, float, int> Int32 = static (from, to, t) => Mathf.RoundToInt(Mathf.LerpUnclamped(from, to, t));
         
         public static readonly Func<Color, Color, float, Color> Color = static (from, to, t) => UnityEngine.Color.LerpUnclamped(from, to, t);
         public static readonly Func<Color32, Color32, float, Color32> Color32 = static (from, to, t) => UnityEngine.Color32.LerpUnclamped(from, to, t);

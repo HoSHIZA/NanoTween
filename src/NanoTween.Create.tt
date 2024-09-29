@@ -1,3 +1,5 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
 //
 //   A tweening system for asset embedding.
 //
@@ -25,46 +27,55 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using NanoTweenRootNamespace.Helpers;
 using UnityEngine;
 
 namespace NanoTweenRootNamespace
 {
     internal static partial class NanoTween
     {
+<# 
+var types = new[] { "Single", "Int32", "Color", "Color32", "String", "Vector2", "Vector3", "Vector4" };
+
+foreach (var type in types)
+{
+#>
         [MethodImpl(256)]
-        public static NanoTweenBuilder<T> CreateTween<T>(T to, float duration, Func<T, T, float, T> lerp)
+        public static NanoTweenBuilder<<#= type #>> CreateTween(<#= type #> from, <#= type #> to, float duration)
         {
-            return NanoTweenBuilder<T>.Create(default, to, duration, lerp);
+            return NanoTweenBuilder<<#= type #>>.Create(from, to, duration, LerpFunction.<#= type #>);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<T> CreateTweenInf<T>(T to, Func<T, T, float, T> lerp)
+        public static NanoTweenBuilder<<#= type #>> CreateTweenInf(<#= type #> from, <#= type #> to)
         {
-            return NanoTweenBuilder<T>.Create(default, to, 0f, lerp);
+            return NanoTweenBuilder<<#= type #>>.Create(from, to, 0f, LerpFunction.<#= type #>);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<T> CreateTween<T>(T from, T to, float duration, Func<T, T, float, T> lerp)
+        public static NanoTweenBuilder<<#= type #>> CreateTween(<#= type #> to, float duration)
         {
-            return NanoTweenBuilder<T>.Create(from, to, duration, lerp);
+            return NanoTweenBuilder<<#= type #>>.Create(default, to, duration, LerpFunction.<#= type #>);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<T> CreateTweenInf<T>(T from, T to, Func<T, T, float, T> lerp)
+        public static NanoTweenBuilder<<#= type #>> CreateTweenInf(<#= type #> to)
         {
-            return NanoTweenBuilder<T>.Create(from, to, 0f, lerp);
+            return NanoTweenBuilder<<#= type #>>.Create(default, to, 0f, LerpFunction.<#= type #>);
+        }
+        
+        [MethodImpl(256)]
+        public static NanoTweenBuilder<<#= type #>> CreateTween(this MonoBehaviour owner, <#= type #> from, <#= type #> to, float duration)
+        {
+            return NanoTweenBuilder<<#= type #>>.Create(owner, from, to, duration, LerpFunction.<#= type #>);
+        }
+        
+        [MethodImpl(256)]
+        public static NanoTweenBuilder<<#= type #>> CreateTween(this MonoBehaviour owner, <#= type #> to, float duration)
+        {
+            return NanoTweenBuilder<<#= type #>>.Create(owner, default, to, duration, LerpFunction.<#= type #>);
         }
 
-        [MethodImpl(256)]
-        public static NanoTweenBuilder<T> CreateTween<T>(this MonoBehaviour owner, T to, float duration, Func<T, T, float, T> lerp)
-        {
-            return NanoTweenBuilder<T>.Create(owner, default, to, duration, lerp);
-        }
-
-        [MethodImpl(256)]
-        public static NanoTweenBuilder<T> CreateTween<T>(this MonoBehaviour owner, T from, T to, float duration, Func<T, T, float, T> lerp)
-        {
-            return NanoTweenBuilder<T>.Create(owner, from, to, duration, lerp);
-        }
+<# } #>
     }
 }
