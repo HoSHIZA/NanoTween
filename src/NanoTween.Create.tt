@@ -40,41 +40,45 @@ var types = new[] { "Single", "Int32", "Color", "Color32", "String", "Vector2", 
 foreach (var type in types)
 {
 #>
+        #region <#= type #>
+        
         [MethodImpl(256)]
-        public static NanoTweenBuilder<<#= type #>> CreateTween(<#= type #> from, <#= type #> to, float duration)
+        public static NanoTweenBuilder<<#= type #>> CreateTween(<#= type #> from, <#= type #> to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<<#= type #>>.Create(from, to, duration, LerpFunction.<#= type #>);
+            return NanoTweenBuilder<<#= type #>>.Create(from, to, duration, LerpFunction.<#= type #>, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<<#= type #>> CreateTweenInf(<#= type #> from, <#= type #> to)
+        public static NanoTweenBuilder<<#= type #>> CreateTweenInf(<#= type #> from, <#= type #> to, bool usePooling = true)
         {
-            return NanoTweenBuilder<<#= type #>>.Create(from, to, 0f, LerpFunction.<#= type #>);
+            return NanoTweenBuilder<<#= type #>>.Create(from, to, 0f, LerpFunction.<#= type #>, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<<#= type #>> CreateTween(<#= type #> to, float duration)
+        public static NanoTweenBuilder<<#= type #>> CreateTween(<#= type #> to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<<#= type #>>.Create(default, to, duration, LerpFunction.<#= type #>);
+            return NanoTweenBuilder<<#= type #>>.Create(default, to, duration, LerpFunction.<#= type #>, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<<#= type #>> CreateTweenInf(<#= type #> to)
+        public static NanoTweenBuilder<<#= type #>> CreateTweenInf(<#= type #> to, bool usePooling = true)
         {
-            return NanoTweenBuilder<<#= type #>>.Create(default, to, 0f, LerpFunction.<#= type #>);
+            return NanoTweenBuilder<<#= type #>>.Create(default, to, 0f, LerpFunction.<#= type #>, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<<#= type #>> CreateTween(this MonoBehaviour owner, <#= type #> from, <#= type #> to, float duration)
+        public static NanoTweenBuilder<<#= type #>> CreateTween(this MonoBehaviour owner, <#= type #> from, <#= type #> to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<<#= type #>>.Create(owner, from, to, duration, LerpFunction.<#= type #>);
+            return NanoTweenBuilder<<#= type #>>.Create(owner, from, to, duration, LerpFunction.<#= type #>, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<<#= type #>> CreateTween(this MonoBehaviour owner, <#= type #> to, float duration)
+        public static NanoTweenBuilder<<#= type #>> CreateTween(this MonoBehaviour owner, <#= type #> to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<<#= type #>>.Create(owner, default, to, duration, LerpFunction.<#= type #>);
+            return NanoTweenBuilder<<#= type #>>.Create(owner, default, to, duration, LerpFunction.<#= type #>, usePooling);
         }
+
+        #endregion
 
 <# } #>
     }

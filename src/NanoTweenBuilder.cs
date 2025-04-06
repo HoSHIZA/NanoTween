@@ -33,7 +33,7 @@ using UnityEngine;
 
 namespace NanoTweenRootNamespace
 {
-    internal sealed class NanoTweenBuilderBuffer<T> : AbstractPooledBuffer<NanoTweenBuilderBuffer<T>>
+    internal sealed class NanoTweenBuilderBuffer<T> : AbstractPooledBuffer<NanoTweenBuilderBuffer<T>>, IDisposable
     {
         public NanoTweenData<T> Data;
         public MonoBehaviour Owner;
@@ -42,6 +42,7 @@ namespace NanoTweenRootNamespace
         public bool ScheduleOnBind;
         
         public bool Preserve;
+        public bool UsePool;
         
         protected override void Reset()
         {
@@ -51,6 +52,14 @@ namespace NanoTweenRootNamespace
             BindOnSchedule = true;
             
             Preserve = false;
+            UsePool = true;
+        }
+        
+        public void Dispose()
+        {
+            if (!UsePool) return;
+            
+            Release(this);
         }
     }
     
@@ -60,7 +69,7 @@ namespace NanoTweenRootNamespace
         internal readonly ushort Revision;
         internal NanoTweenBuilderBuffer<T> Buffer;
         
-        internal NanoTweenBuilder(NanoTweenBuilderBuffer<T> buffer)
+        private NanoTweenBuilder(NanoTweenBuilderBuffer<T> buffer)
         {
             Revision = buffer.Revision;
             Buffer = buffer;
@@ -69,9 +78,10 @@ namespace NanoTweenRootNamespace
         #region Creation
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<T> Create(MonoBehaviour owner, T from, T to, float duration, Func<T, T, float, T> lerp)
+        public static NanoTweenBuilder<T> Create(MonoBehaviour owner, T from, T to, float duration, 
+            Func<T, T, float, T> lerp, bool usePooling = true)
         {
-            var buffer = NanoTweenBuilderBuffer<T>.GetPooled();
+            var buffer = usePooling ? NanoTweenBuilderBuffer<T>.GetPooled() : new NanoTweenBuilderBuffer<T>();
             
             buffer.Owner = owner;
             
@@ -85,9 +95,10 @@ namespace NanoTweenRootNamespace
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<T> Create(T from, T to, float duration, Func<T, T, float, T> lerp)
+        public static NanoTweenBuilder<T> Create(T from, T to, float duration, 
+            Func<T, T, float, T> lerp, bool usePooling = true)
         {
-            var buffer = NanoTweenBuilderBuffer<T>.GetPooled();
+            var buffer = usePooling ? NanoTweenBuilderBuffer<T>.GetPooled() : new NanoTweenBuilderBuffer<T>();
             
             buffer.Data.From = from;
             buffer.Data.To = to;
@@ -583,6 +594,32 @@ namespace NanoTweenRootNamespace
         
         #endregion
         
+        public NanoTweenBuilder<T> Clone(bool? usePooling = null)
+        {
+            var buffer = usePooling ?? Buffer.UsePool 
+                ? NanoTweenBuilderBuffer<T>.GetPooled() 
+                : new NanoTweenBuilderBuffer<T>();
+            
+            buffer.Owner = Buffer.Owner;
+            buffer.Data = Buffer.Data;
+            
+            buffer.BindOnSchedule = Buffer.BindOnSchedule;
+            buffer.ScheduleOnBind = Buffer.ScheduleOnBind;
+            
+            buffer.Preserve = Buffer.Preserve;
+            buffer.UsePool = usePooling ?? Buffer.UsePool;
+            
+            return new NanoTweenBuilder<T>(buffer);
+        }
+
+        public void Dispose()
+        {
+            if (Buffer == null) return;
+            
+            Buffer.Dispose();
+            Buffer = null;
+        }
+
         private NanoTweenHandle Schedule()
         {
             if (Buffer.BindOnSchedule && Buffer.Data.Callback.ValueUpdateAction != null)
@@ -594,23 +631,14 @@ namespace NanoTweenRootNamespace
                 ? NanoTweenUpdate.Run(Buffer.Data) 
                 : NanoTweenUpdate.RunAsCoroutine(Buffer.Owner, Buffer.Data);
             
-            if (!Buffer.Preserve)
+            if (Buffer.UsePool && !Buffer.Preserve)
             {
                 Dispose();
             }
 
             return handle;
         }
-        
-        public void Dispose()
-        {
-            if (Buffer == null) return;
-            
-            NanoTweenBuilderBuffer<T>.Release(Buffer);
-            
-            Buffer = null;
-        }
-        
+
         [MethodImpl(256)]
         private readonly void ValidateBuffer()
         {

@@ -38,7 +38,7 @@ namespace NanoTweenRootNamespace
         {
             if (_instance) return _instance;
             
-            var go = new GameObject("Tween Update")
+            var go = new GameObject("[Tween Update]")
             {
                 hideFlags = HideFlags.HideAndDontSave
             };

@@ -32,293 +32,325 @@ namespace NanoTweenRootNamespace
 {
     internal static partial class NanoTween
     {
+        #region Single
+        
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Single> CreateTween(Single from, Single to, float duration)
+        public static NanoTweenBuilder<Single> CreateTween(Single from, Single to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Single>.Create(from, to, duration, LerpFunction.Single);
+            return NanoTweenBuilder<Single>.Create(from, to, duration, LerpFunction.Single, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Single> CreateTweenInf(Single from, Single to)
+        public static NanoTweenBuilder<Single> CreateTweenInf(Single from, Single to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Single>.Create(from, to, 0f, LerpFunction.Single);
+            return NanoTweenBuilder<Single>.Create(from, to, 0f, LerpFunction.Single, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Single> CreateTween(Single to, float duration)
+        public static NanoTweenBuilder<Single> CreateTween(Single to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Single>.Create(default, to, duration, LerpFunction.Single);
+            return NanoTweenBuilder<Single>.Create(default, to, duration, LerpFunction.Single, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Single> CreateTweenInf(Single to)
+        public static NanoTweenBuilder<Single> CreateTweenInf(Single to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Single>.Create(default, to, 0f, LerpFunction.Single);
+            return NanoTweenBuilder<Single>.Create(default, to, 0f, LerpFunction.Single, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Single> CreateTween(this MonoBehaviour owner, Single from, Single to, float duration)
+        public static NanoTweenBuilder<Single> CreateTween(this MonoBehaviour owner, Single from, Single to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Single>.Create(owner, from, to, duration, LerpFunction.Single);
+            return NanoTweenBuilder<Single>.Create(owner, from, to, duration, LerpFunction.Single, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Single> CreateTween(this MonoBehaviour owner, Single to, float duration)
+        public static NanoTweenBuilder<Single> CreateTween(this MonoBehaviour owner, Single to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Single>.Create(owner, default, to, duration, LerpFunction.Single);
+            return NanoTweenBuilder<Single>.Create(owner, default, to, duration, LerpFunction.Single, usePooling);
         }
 
+        #endregion
+
+        #region Int32
+        
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Int32> CreateTween(Int32 from, Int32 to, float duration)
+        public static NanoTweenBuilder<Int32> CreateTween(Int32 from, Int32 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Int32>.Create(from, to, duration, LerpFunction.Int32);
+            return NanoTweenBuilder<Int32>.Create(from, to, duration, LerpFunction.Int32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Int32> CreateTweenInf(Int32 from, Int32 to)
+        public static NanoTweenBuilder<Int32> CreateTweenInf(Int32 from, Int32 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Int32>.Create(from, to, 0f, LerpFunction.Int32);
+            return NanoTweenBuilder<Int32>.Create(from, to, 0f, LerpFunction.Int32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Int32> CreateTween(Int32 to, float duration)
+        public static NanoTweenBuilder<Int32> CreateTween(Int32 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Int32>.Create(default, to, duration, LerpFunction.Int32);
+            return NanoTweenBuilder<Int32>.Create(default, to, duration, LerpFunction.Int32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Int32> CreateTweenInf(Int32 to)
+        public static NanoTweenBuilder<Int32> CreateTweenInf(Int32 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Int32>.Create(default, to, 0f, LerpFunction.Int32);
+            return NanoTweenBuilder<Int32>.Create(default, to, 0f, LerpFunction.Int32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Int32> CreateTween(this MonoBehaviour owner, Int32 from, Int32 to, float duration)
+        public static NanoTweenBuilder<Int32> CreateTween(this MonoBehaviour owner, Int32 from, Int32 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Int32>.Create(owner, from, to, duration, LerpFunction.Int32);
+            return NanoTweenBuilder<Int32>.Create(owner, from, to, duration, LerpFunction.Int32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Int32> CreateTween(this MonoBehaviour owner, Int32 to, float duration)
+        public static NanoTweenBuilder<Int32> CreateTween(this MonoBehaviour owner, Int32 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Int32>.Create(owner, default, to, duration, LerpFunction.Int32);
+            return NanoTweenBuilder<Int32>.Create(owner, default, to, duration, LerpFunction.Int32, usePooling);
         }
 
+        #endregion
+
+        #region Color
+        
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color> CreateTween(Color from, Color to, float duration)
+        public static NanoTweenBuilder<Color> CreateTween(Color from, Color to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color>.Create(from, to, duration, LerpFunction.Color);
+            return NanoTweenBuilder<Color>.Create(from, to, duration, LerpFunction.Color, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color> CreateTweenInf(Color from, Color to)
+        public static NanoTweenBuilder<Color> CreateTweenInf(Color from, Color to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color>.Create(from, to, 0f, LerpFunction.Color);
+            return NanoTweenBuilder<Color>.Create(from, to, 0f, LerpFunction.Color, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color> CreateTween(Color to, float duration)
+        public static NanoTweenBuilder<Color> CreateTween(Color to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color>.Create(default, to, duration, LerpFunction.Color);
+            return NanoTweenBuilder<Color>.Create(default, to, duration, LerpFunction.Color, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color> CreateTweenInf(Color to)
+        public static NanoTweenBuilder<Color> CreateTweenInf(Color to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color>.Create(default, to, 0f, LerpFunction.Color);
+            return NanoTweenBuilder<Color>.Create(default, to, 0f, LerpFunction.Color, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color> CreateTween(this MonoBehaviour owner, Color from, Color to, float duration)
+        public static NanoTweenBuilder<Color> CreateTween(this MonoBehaviour owner, Color from, Color to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color>.Create(owner, from, to, duration, LerpFunction.Color);
+            return NanoTweenBuilder<Color>.Create(owner, from, to, duration, LerpFunction.Color, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color> CreateTween(this MonoBehaviour owner, Color to, float duration)
+        public static NanoTweenBuilder<Color> CreateTween(this MonoBehaviour owner, Color to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color>.Create(owner, default, to, duration, LerpFunction.Color);
+            return NanoTweenBuilder<Color>.Create(owner, default, to, duration, LerpFunction.Color, usePooling);
         }
 
+        #endregion
+
+        #region Color32
+        
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color32> CreateTween(Color32 from, Color32 to, float duration)
+        public static NanoTweenBuilder<Color32> CreateTween(Color32 from, Color32 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color32>.Create(from, to, duration, LerpFunction.Color32);
+            return NanoTweenBuilder<Color32>.Create(from, to, duration, LerpFunction.Color32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color32> CreateTweenInf(Color32 from, Color32 to)
+        public static NanoTweenBuilder<Color32> CreateTweenInf(Color32 from, Color32 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color32>.Create(from, to, 0f, LerpFunction.Color32);
+            return NanoTweenBuilder<Color32>.Create(from, to, 0f, LerpFunction.Color32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color32> CreateTween(Color32 to, float duration)
+        public static NanoTweenBuilder<Color32> CreateTween(Color32 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color32>.Create(default, to, duration, LerpFunction.Color32);
+            return NanoTweenBuilder<Color32>.Create(default, to, duration, LerpFunction.Color32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color32> CreateTweenInf(Color32 to)
+        public static NanoTweenBuilder<Color32> CreateTweenInf(Color32 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color32>.Create(default, to, 0f, LerpFunction.Color32);
+            return NanoTweenBuilder<Color32>.Create(default, to, 0f, LerpFunction.Color32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color32> CreateTween(this MonoBehaviour owner, Color32 from, Color32 to, float duration)
+        public static NanoTweenBuilder<Color32> CreateTween(this MonoBehaviour owner, Color32 from, Color32 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color32>.Create(owner, from, to, duration, LerpFunction.Color32);
+            return NanoTweenBuilder<Color32>.Create(owner, from, to, duration, LerpFunction.Color32, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Color32> CreateTween(this MonoBehaviour owner, Color32 to, float duration)
+        public static NanoTweenBuilder<Color32> CreateTween(this MonoBehaviour owner, Color32 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Color32>.Create(owner, default, to, duration, LerpFunction.Color32);
+            return NanoTweenBuilder<Color32>.Create(owner, default, to, duration, LerpFunction.Color32, usePooling);
         }
 
+        #endregion
+
+        #region String
+        
         [MethodImpl(256)]
-        public static NanoTweenBuilder<String> CreateTween(String from, String to, float duration)
+        public static NanoTweenBuilder<String> CreateTween(String from, String to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<String>.Create(from, to, duration, LerpFunction.String);
+            return NanoTweenBuilder<String>.Create(from, to, duration, LerpFunction.String, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<String> CreateTweenInf(String from, String to)
+        public static NanoTweenBuilder<String> CreateTweenInf(String from, String to, bool usePooling = true)
         {
-            return NanoTweenBuilder<String>.Create(from, to, 0f, LerpFunction.String);
+            return NanoTweenBuilder<String>.Create(from, to, 0f, LerpFunction.String, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<String> CreateTween(String to, float duration)
+        public static NanoTweenBuilder<String> CreateTween(String to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<String>.Create(default, to, duration, LerpFunction.String);
+            return NanoTweenBuilder<String>.Create(default, to, duration, LerpFunction.String, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<String> CreateTweenInf(String to)
+        public static NanoTweenBuilder<String> CreateTweenInf(String to, bool usePooling = true)
         {
-            return NanoTweenBuilder<String>.Create(default, to, 0f, LerpFunction.String);
+            return NanoTweenBuilder<String>.Create(default, to, 0f, LerpFunction.String, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<String> CreateTween(this MonoBehaviour owner, String from, String to, float duration)
+        public static NanoTweenBuilder<String> CreateTween(this MonoBehaviour owner, String from, String to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<String>.Create(owner, from, to, duration, LerpFunction.String);
+            return NanoTweenBuilder<String>.Create(owner, from, to, duration, LerpFunction.String, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<String> CreateTween(this MonoBehaviour owner, String to, float duration)
+        public static NanoTweenBuilder<String> CreateTween(this MonoBehaviour owner, String to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<String>.Create(owner, default, to, duration, LerpFunction.String);
+            return NanoTweenBuilder<String>.Create(owner, default, to, duration, LerpFunction.String, usePooling);
         }
 
+        #endregion
+
+        #region Vector2
+        
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector2> CreateTween(Vector2 from, Vector2 to, float duration)
+        public static NanoTweenBuilder<Vector2> CreateTween(Vector2 from, Vector2 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector2>.Create(from, to, duration, LerpFunction.Vector2);
+            return NanoTweenBuilder<Vector2>.Create(from, to, duration, LerpFunction.Vector2, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector2> CreateTweenInf(Vector2 from, Vector2 to)
+        public static NanoTweenBuilder<Vector2> CreateTweenInf(Vector2 from, Vector2 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector2>.Create(from, to, 0f, LerpFunction.Vector2);
+            return NanoTweenBuilder<Vector2>.Create(from, to, 0f, LerpFunction.Vector2, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector2> CreateTween(Vector2 to, float duration)
+        public static NanoTweenBuilder<Vector2> CreateTween(Vector2 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector2>.Create(default, to, duration, LerpFunction.Vector2);
+            return NanoTweenBuilder<Vector2>.Create(default, to, duration, LerpFunction.Vector2, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector2> CreateTweenInf(Vector2 to)
+        public static NanoTweenBuilder<Vector2> CreateTweenInf(Vector2 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector2>.Create(default, to, 0f, LerpFunction.Vector2);
+            return NanoTweenBuilder<Vector2>.Create(default, to, 0f, LerpFunction.Vector2, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector2> CreateTween(this MonoBehaviour owner, Vector2 from, Vector2 to, float duration)
+        public static NanoTweenBuilder<Vector2> CreateTween(this MonoBehaviour owner, Vector2 from, Vector2 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector2>.Create(owner, from, to, duration, LerpFunction.Vector2);
+            return NanoTweenBuilder<Vector2>.Create(owner, from, to, duration, LerpFunction.Vector2, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector2> CreateTween(this MonoBehaviour owner, Vector2 to, float duration)
+        public static NanoTweenBuilder<Vector2> CreateTween(this MonoBehaviour owner, Vector2 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector2>.Create(owner, default, to, duration, LerpFunction.Vector2);
+            return NanoTweenBuilder<Vector2>.Create(owner, default, to, duration, LerpFunction.Vector2, usePooling);
         }
 
+        #endregion
+
+        #region Vector3
+        
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector3> CreateTween(Vector3 from, Vector3 to, float duration)
+        public static NanoTweenBuilder<Vector3> CreateTween(Vector3 from, Vector3 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector3>.Create(from, to, duration, LerpFunction.Vector3);
+            return NanoTweenBuilder<Vector3>.Create(from, to, duration, LerpFunction.Vector3, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector3> CreateTweenInf(Vector3 from, Vector3 to)
+        public static NanoTweenBuilder<Vector3> CreateTweenInf(Vector3 from, Vector3 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector3>.Create(from, to, 0f, LerpFunction.Vector3);
+            return NanoTweenBuilder<Vector3>.Create(from, to, 0f, LerpFunction.Vector3, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector3> CreateTween(Vector3 to, float duration)
+        public static NanoTweenBuilder<Vector3> CreateTween(Vector3 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector3>.Create(default, to, duration, LerpFunction.Vector3);
+            return NanoTweenBuilder<Vector3>.Create(default, to, duration, LerpFunction.Vector3, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector3> CreateTweenInf(Vector3 to)
+        public static NanoTweenBuilder<Vector3> CreateTweenInf(Vector3 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector3>.Create(default, to, 0f, LerpFunction.Vector3);
+            return NanoTweenBuilder<Vector3>.Create(default, to, 0f, LerpFunction.Vector3, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector3> CreateTween(this MonoBehaviour owner, Vector3 from, Vector3 to, float duration)
+        public static NanoTweenBuilder<Vector3> CreateTween(this MonoBehaviour owner, Vector3 from, Vector3 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector3>.Create(owner, from, to, duration, LerpFunction.Vector3);
+            return NanoTweenBuilder<Vector3>.Create(owner, from, to, duration, LerpFunction.Vector3, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector3> CreateTween(this MonoBehaviour owner, Vector3 to, float duration)
+        public static NanoTweenBuilder<Vector3> CreateTween(this MonoBehaviour owner, Vector3 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector3>.Create(owner, default, to, duration, LerpFunction.Vector3);
+            return NanoTweenBuilder<Vector3>.Create(owner, default, to, duration, LerpFunction.Vector3, usePooling);
         }
 
+        #endregion
+
+        #region Vector4
+        
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector4> CreateTween(Vector4 from, Vector4 to, float duration)
+        public static NanoTweenBuilder<Vector4> CreateTween(Vector4 from, Vector4 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector4>.Create(from, to, duration, LerpFunction.Vector4);
+            return NanoTweenBuilder<Vector4>.Create(from, to, duration, LerpFunction.Vector4, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector4> CreateTweenInf(Vector4 from, Vector4 to)
+        public static NanoTweenBuilder<Vector4> CreateTweenInf(Vector4 from, Vector4 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector4>.Create(from, to, 0f, LerpFunction.Vector4);
+            return NanoTweenBuilder<Vector4>.Create(from, to, 0f, LerpFunction.Vector4, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector4> CreateTween(Vector4 to, float duration)
+        public static NanoTweenBuilder<Vector4> CreateTween(Vector4 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector4>.Create(default, to, duration, LerpFunction.Vector4);
+            return NanoTweenBuilder<Vector4>.Create(default, to, duration, LerpFunction.Vector4, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector4> CreateTweenInf(Vector4 to)
+        public static NanoTweenBuilder<Vector4> CreateTweenInf(Vector4 to, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector4>.Create(default, to, 0f, LerpFunction.Vector4);
+            return NanoTweenBuilder<Vector4>.Create(default, to, 0f, LerpFunction.Vector4, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector4> CreateTween(this MonoBehaviour owner, Vector4 from, Vector4 to, float duration)
+        public static NanoTweenBuilder<Vector4> CreateTween(this MonoBehaviour owner, Vector4 from, Vector4 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector4>.Create(owner, from, to, duration, LerpFunction.Vector4);
+            return NanoTweenBuilder<Vector4>.Create(owner, from, to, duration, LerpFunction.Vector4, usePooling);
         }
         
         [MethodImpl(256)]
-        public static NanoTweenBuilder<Vector4> CreateTween(this MonoBehaviour owner, Vector4 to, float duration)
+        public static NanoTweenBuilder<Vector4> CreateTween(this MonoBehaviour owner, Vector4 to, float duration, bool usePooling = true)
         {
-            return NanoTweenBuilder<Vector4>.Create(owner, default, to, duration, LerpFunction.Vector4);
+            return NanoTweenBuilder<Vector4>.Create(owner, default, to, duration, LerpFunction.Vector4, usePooling);
         }
+
+        #endregion
 
     }
 }
